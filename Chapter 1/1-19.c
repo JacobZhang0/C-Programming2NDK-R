@@ -14,6 +14,7 @@ int main()
         reverse(stored, reversed);
         printf("%s", reversed);
     }
+    return 0;
 }
 
 int get_line(char line[], int max) 

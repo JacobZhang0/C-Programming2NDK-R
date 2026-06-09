@@ -12,7 +12,7 @@ int main()
         if (len > 80) 
             printf("%s", stored);
         
-    
+    return 0;
 
 }
 
