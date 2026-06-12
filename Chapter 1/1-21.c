@@ -4,14 +4,14 @@
 #define TABSPACE 8
 
 int get_line(char stored[]);
-void detab(char stored[], char output[]);
+void entab(char stored[], char output[]);
 
 int main()
 {
     char stored[MAXLENGTH];
     char output[MAXLENGTH];
     while (get_line(stored) > 0) {
-        detab(stored, output);
+        entab(stored, output);
         printf("%s", output);
     }   
     return 0;
@@ -37,25 +37,31 @@ int get_line(char stored[])
     return i;
 }
 
-void detab(char stored[], char output[])
+void entab(char stored[], char output[])
 {
-    int i, column = 0, k = 0;
+    int i, column = 0, k = 0, space_count = 0;
     for (i = 0; stored[i] != '\0'; ++i) {
-        if (stored[i] == '\n') {
-            output[k++] = '\n';
-            column = 0;
-        }
-        else if (stored[i] == '\t') {
-            int spaces = TABSPACE - (column % TABSPACE);
+        if (stored[i] == ' ') {
+            ++space_count;
+            ++column;
 
-            for (int j = 0; j < spaces; ++j) {
-                output[k++] = ' ';
-                ++column;
+            if (column % TABSPACE == 0) {
+                output[k++] = '\t';
+                space_count = 0;
             }
         }
         else {
+            while (space_count > 0) {
+                output[k++] = ' ';
+                --space_count;
+            }
+
             output[k++] = stored[i];
-            ++column;
+
+            if (stored[i] == '\n')
+                column = 0;
+            else
+                ++column;
         }
     }
 
